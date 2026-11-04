@@ -1,0 +1,22 @@
+
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,popularity,release_decade,mood_tags,instrumentalness,liveness
+1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,78,2020,uplifting|sunny|danceable,0.02,0.12
+2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,62,2020,calm|nocturnal|studious,0.85,0.10
+3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,70,2010,aggressive|driving|powerful,0.05,0.30
+4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,55,2020,calm|cozy|studious,0.90,0.08
+5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,88,2020,energetic|motivational|powerful,0.01,0.15
+6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,45,2010,dreamy|calm|spacious,0.95,0.06
+7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,52,2000,cozy|smooth|warm,0.40,0.35
+8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,66,2010,nocturnal|driving|nostalgic,0.70,0.09
+9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,58,2020,studious|calm|steady,0.88,0.09
+10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,64,2010,sunny|uplifting|nostalgic,0.03,0.20
+11,Block Party Anthem,Kid Meridian,hip hop,playful,0.80,96,0.78,0.88,0.12,85,2010,confident|bold|danceable,0.02,0.25
+12,Velvet Hours,Sable Rue,r&b,romantic,0.48,88,0.66,0.72,0.35,74,2010,smooth|warm|intimate,0.05,0.18
+13,Neon Pulse,Volt Atlas,electronic,euphoric,0.93,128,0.82,0.90,0.04,80,2020,energetic|euphoric|danceable,0.60,0.40
+14,Dusty Highway,Hollow Pines,country,nostalgic,0.52,102,0.70,0.58,0.62,60,2000,nostalgic|warm|storytelling,0.05,0.30
+15,Adagio for Rain,Elena Voss,classical,melancholy,0.22,58,0.20,0.18,0.97,48,1990,melancholic|lonely|spacious,0.98,0.20
+16,Calle Sol,Marisol Vega,latin,happy,0.85,100,0.88,0.90,0.30,82,2020,sunny|danceable|playful,0.03,0.35
+17,Iron Reign,Black Granite,metal,aggressive,0.97,168,0.30,0.45,0.03,50,2000,aggressive|powerful|dark,0.10,0.45
+18,Desert Caravan,Nomad Station,world,mysterious,0.45,92,0.40,0.50,0.80,38,1990,spacious|warm|dreamy,0.65,0.15
+19,Storm Cellar,Voltline,rock,intense,0.88,148,0.42,0.58,0.08,61,2010,aggressive|driving|dark,0.10,0.28
+20,Confetti Sky,Luma Vale,pop,happy,0.87,126,0.90,0.85,0.14,80,2020,uplifting|sunny|playful,0.02,0.14
