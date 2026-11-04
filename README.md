@@ -1,33 +1,63 @@
-# 🎵 Music Recommender Simulation
+# Music Recommender Simulation
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+This project simulates a content-based music recommendation system. Given a catalog of 18 songs and a user's taste profile, it scores each song using weighted feature matching (genre, mood, energy, valence, danceability, acousticness, and tempo), ranks them, and returns the top recommendations with plain-language explanations. It supports multiple ranking strategies (genre-first, mood-first, energy-focused) via a Strategy design pattern and applies an artist diversity penalty to reduce filter bubbles.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
+Production recommender systems like Spotify's combine collaborative filtering (what similar users listen to) and content-based filtering (what a song sounds like) to generate personalized suggestions. This project focuses on the content-based side only: given a user's preferences and a catalog of songs, score and rank each song by how well its attributes match what the user wants. No listening history from other users is involved.
 
-Some prompts to answer:
+### Input Data
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+The song catalog (`data/songs.csv`) contains 18 songs, each with 13 attributes: id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness, popularity, instrumentalness, and liveness.
 
-You can include a simple diagram or bullet list if helpful.
+### User Preferences
+
+A user profile specifies:
+
+| Preference | Type | Example |
+|---|---|---|
+| `genre` | Categorical | "pop" |
+| `mood` | Categorical | "happy" |
+| `energy` | Numerical (0.0-1.0) | 0.85 |
+| `valence` | Numerical (0.0-1.0) | 0.80 |
+| `danceability` | Numerical (0.0-1.0) | 0.80 |
+| `likes_acoustic` | Boolean | False |
+| `tempo` | BPM (40-220) | 125 |
+
+### Scoring Algorithm
+
+Each song starts at 0 points. The system adds:
+
+| Condition | Weight | Points |
+|---|---|---|
+| Song genre matches user's preferred genre | 2.0 | +2.0 (binary) |
+| Song mood matches user's preferred mood | 1.0 | +1.0 (binary) |
+| Energy similarity: `1 - abs(song - target)` | 1.5 | +0.0 to +1.5 |
+| Valence similarity: `1 - abs(song - target)` | 0.5 | +0.0 to +0.5 |
+| Danceability similarity: `1 - abs(song - target)` | 0.5 | +0.0 to +0.5 |
+| Acousticness: song value if user likes acoustic, else `1 - value` | 0.5 | +0.0 to +0.5 |
+| Tempo similarity: normalized distance within 40-220 BPM range | 0.5 | +0.0 to +0.5 |
+
+**Maximum possible score: 6.5**
+
+Songs are sorted descending by total score. An artist diversity penalty (-0.5 per repeat beyond 2 appearances) reduces filter bubbles.
+
+### Ranking Modes
+
+The system supports four ranking strategies via the `--mode` CLI flag:
+
+- **default** — sort by total score only
+- **genre** — genre-matching songs float to the top, then sorted by score
+- **mood** — mood-matching songs float to the top, then sorted by score
+- **energy** — songs closest to target energy float to the top, then sorted by score
+
+### Expected Bias
+
+Because genre match carries the highest weight (2.0 out of 6.5), the system is biased toward same-genre recommendations and will underrank songs from other genres even when their mood and energy are a near-perfect match. The diversity penalty partially mitigates this by preventing the same artist from dominating results.
 
 ---
 
@@ -41,6 +71,7 @@ You can include a simple diagram or bullet list if helpful.
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+   ```
 
 2. Install dependencies
 
@@ -52,6 +83,12 @@ pip install -r requirements.txt
 
 ```bash
 python -m src.main
+```
+
+4. Run with a specific ranking mode:
+
+```bash
+python -m src.main --mode genre
 ```
 
 ### Running Tests
@@ -68,55 +105,34 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
-
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
-
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
+[PASTE REAL TERMINAL OUTPUT HERE AFTER RUNNING: python -m src.main]
 
 ---
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+[PASTE YOUR EXPERIMENTS HERE. For example:]
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+- [What happened when you changed the weight on genre from 2.0 to 0.5]
+- [What happened when you ran --mode genre vs --mode energy]
+- [How did the adversarial profile (classical + melancholy + high energy) behave]
+- [What happened when you removed the diversity penalty]
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+- **Small catalog**: With only 18 songs, recommendations are heavily constrained. Most genres have only 1-2 representatives, so a genre match often returns the same song regardless of other preferences.
+- **Binary categorical matching**: Genre and mood are exact-match only. "Indie pop" gets zero credit for matching a "pop" preference, even though they overlap musically.
+- **No collaborative signal**: The system only knows about song attributes, not what other similar users enjoy. It cannot discover songs through social patterns.
+- **Acousticness is coarse**: The `likes_acoustic` boolean is too simple. A user might prefer moderate acousticness (0.5) rather than maximum or minimum.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
-
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
-
+[WRITE 1-2 PARAGRAPHS HERE ABOUT WHAT YOU LEARNED:
 - about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
-
-
-
+- about where bias or unfairness could show up in systems like this]
